@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Hi-Send Starter Kit</title>
+    <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+<div class="container">
+    <h2>Edit Profile</h2>
+    <input type="text" id="first_name" placeholder="First Name"/>
+    <input type="text" id="last_name" placeholder="Last Name"/>
+    <input type="text" id="phone" placeholder="Phone"/>
+    <input type="email" id="email" disabled readonly placeholder="Email"/>
+
+    <button onclick="updateProfile()">Update Profile</button>
+    <h3>Change Password</h3>
+    <input type="password" id="old_password" placeholder="Current Password"/>
+    <input type="password" id="new_password" placeholder="New Password"/>
+    <input type="password" id="new_password_confirmation" placeholder="Confirm New Password"/>
+    <button onclick="changePassword()">Change Password</button>
+    <p><a href="/dashboard">Back to Dashboard</a></p>
+</div>
+
+<script src="./config.js"></script>
+<script src="./js/app.js"></script>
+<script src="./js/api.js"></script>
+<script>
+
+    let user;
+    window.addEventListener("DOMContentLoaded", async () => {
+        try {
+
+            user = await getAuthUser();
+
+            document.getElementById("first_name").value = user.first_name;
+            document.getElementById("last_name").value = user.last_name;
+            document.getElementById("email").value = user.email;
+            document.getElementById("phone").value = user.phone;
+
+        }
+        catch (error) {
+            console.log(error);
+            window.location.href = "/login.html";
+        }
+    });
+
+    async function updateProfile() {
+        const data = {
+            first_name: document.getElementById("first_name").value,
+            last_name : document.getElementById("last_name").value,
+            phone     : document.getElementById("phone").value
+        };
+
+        try {
+            const res = await apiRequest(`/projects/${CONFIG.projectId}/auth/user`, "PUT", data, true);
+            alert(res.message || "Profile updated");
+        }
+        catch (error) {
+            alert(error.message || "Profile update failed");
+        }
+
+    }
+
+    async function changePassword() {
+        try {
+            const res = await apiRequest(`/projects/${CONFIG.projectId}/auth/change-password`, "POST", {
+                old_password             : document.getElementById("old_password").value,
+                new_password             : document.getElementById("new_password").value,
+                new_password_confirmation: document.getElementById("new_password_confirmation").value
+            }, true);
+            alert(res.message || "Password changed");
+        }catch (error) {
+            alert(error.message || "Password change failed");
+        }
+
+    }
+</script>
+</body>
+</html>
+

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hi-Send Starter Kit</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h2 id="welcome-message">Welcome!</h2>
+      <button onclick="location.href='/profile'">Edit Profile</button>
+      <button onclick="confirmLogout()">Logout</button>
+    </div>
+    <script src="config.js"></script>
+    <script src="./js/app.js"></script>
+    <script src="./js/api.js"></script>
+    <script>
+      let user;
+      window.addEventListener("DOMContentLoaded", async () => {
+        try {
+
+          user = await getAuthUser();
+          console.log(user);
+
+          document.getElementById("welcome-message").textContent =
+            "Welcome, " + (user.full_name || "User") + "!";
+
+        } catch (error) {
+          window.location.href = "/login.html";
+        }
+      });
+
+      const logout = async () => {
+        await apiRequest(`/projects/${CONFIG.projectId}/auth/logout`, "POST")
+        localStorage.removeItem("token");
+        window.location.href = "/login.html";
+      }
+
+      const confirmLogout = () => {
+        const confirmation = confirm("Are you sure you want to logout");
+
+
+        if(confirmation){
+          logout()
+        }
+      }
+    </script>
+  </body>
+</html>

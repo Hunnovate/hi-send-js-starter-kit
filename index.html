@@ -1,0 +1,67 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hi-Send Starter Kit</title>
+  <style>
+    body { font-family: sans-serif; line-height: 1.6; margin: 0; padding: 0; }
+    header, footer { background: #1a1a1a; color: #fff; padding: 1rem 2rem; }
+    nav { display: flex; justify-content: space-between; align-items: center; }
+    nav a { color: #fff; text-decoration: none; margin-left: 1rem; }
+    .hero { padding: 4rem 2rem; background: #f4f4f4; text-align: center; }
+    .hero h1 { margin-bottom: 1rem; font-size: 2.5rem; }
+    .section { padding: 2rem; max-width: 800px; margin: auto; }
+    .section h2 { margin-bottom: 1rem; }
+    form input, form textarea, form button {
+      display: block; width: 100%; margin-bottom: 1rem; padding: 0.75rem;
+      font-size: 1rem; border: 1px solid #ccc; border-radius: 4px;
+    }
+    form button { background: #1a1a1a; color: #fff; border: none; cursor: pointer; }
+    form button:hover { background: #333; }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <div><strong>Hi-Send Starter Kit</strong></div>
+    <div>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+      <a href="./login.html">Login</a>
+      <a href="./signup.html">Sign Up</a>
+    </div>
+  </nav>
+</header>
+
+<section class="hero">
+  <h1>Build Fast With Hi-Send Starter Kit</h1>
+  <p>Lightweight, modern, and open source — a perfect base for integrating with the Hi-Send API.</p>
+</section>
+
+<section class="section" id="about">
+  <h2>What is Hi-Send?</h2>
+  <p>
+    Hi-Send is a powerful communication and payment API platform designed to make sending OTPs via Email, SMS, and WhatsApp easy and reliable.
+    It also supports airtime, data, and electricity bill payments. This starter kit offers a simple authentication-ready frontend built with HTML, CSS, and JavaScript using Axios — no frameworks or build tools required.
+  </p>
+</section>
+
+<section class="section" id="contact">
+  <h2>Contact Us</h2>
+  <form>
+    <input type="text" placeholder="Your Name" required />
+    <input type="email" placeholder="Your Email" required />
+    <textarea placeholder="Your Message" rows="5" required></textarea>
+    <button type="submit">Send Message</button>
+  </form>
+</section>
+
+<footer>
+  <p>&copy; 2025 Hi-Send | Built by Hunnovate</p>
+</footer>
+
+</body>
+</html>

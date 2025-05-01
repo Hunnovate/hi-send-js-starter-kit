@@ -7,7 +7,15 @@
     <link rel="stylesheet" href="css/style.css"/>
 </head>
 <body>
+    <aside class="sidebar">
+        <h3 class="sidebar-title">Menu</h3>
+        <nav class="sidebar-menu">
+          <a href="/profile.html">Edit Profile</a>
+          <a style="cursor: pointer;" onclick="confirmLogout()">Logout</a>
+        </nav>
+      </aside>
 <div class="container">
+    <p><a href="/dashboard.html">Back to Dashboard</a></p>
     <h2>Edit Profile</h2>
     <input type="text" id="first_name" placeholder="First Name"/>
     <input type="text" id="last_name" placeholder="Last Name"/>
@@ -20,7 +28,7 @@
     <input type="password" id="new_password" placeholder="New Password"/>
     <input type="password" id="new_password_confirmation" placeholder="Confirm New Password"/>
     <button onclick="changePassword()">Change Password</button>
-    <p><a href="/dashboard">Back to Dashboard</a></p>
+    
 </div>
 
 <script src="./config.js"></script>
@@ -76,6 +84,13 @@
         }
 
     }
+
+    const confirmLogout = () => {
+        const confirmation = confirm("Are you sure you want to logout?");
+        if (confirmation) {
+          logout();
+        }
+      };
 </script>
 </body>
 </html>

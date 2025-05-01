@@ -7,11 +7,21 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
-    <div class="container">
-      <h2 id="welcome-message">Welcome!</h2>
-      <button onclick="location.href='/profile'">Edit Profile</button>
-      <button onclick="confirmLogout()">Logout</button>
+    <aside class="sidebar">
+      <h3 class="sidebar-title">Menu</h3>
+      <nav class="sidebar-menu">
+        <a href="/profile.html">Edit Profile</a>
+        <a onclick="confirmLogout()">Logout</a>
+      </nav>
+    </aside>
+    <div class="layout">
+      <main class="main-content">
+        <div class="container">
+          <h2 id="welcome-message">Welcome!</h2>
+        </div>
+      </main>
     </div>
+  
     <script src="config.js"></script>
     <script src="./js/app.js"></script>
     <script src="./js/api.js"></script>
@@ -19,32 +29,28 @@
       let user;
       window.addEventListener("DOMContentLoaded", async () => {
         try {
-
           user = await getAuthUser();
           console.log(user);
-
           document.getElementById("welcome-message").textContent =
             "Welcome, " + (user.full_name || "User") + "!";
-
         } catch (error) {
           window.location.href = "/login.html";
         }
       });
-
+  
       const logout = async () => {
-        await apiRequest(`/projects/${CONFIG.projectId}/auth/logout`, "POST")
+        await apiRequest(`/projects/${CONFIG.projectId}/auth/logout`, "POST");
         localStorage.removeItem("token");
         window.location.href = "/login.html";
-      }
-
+      };
+  
       const confirmLogout = () => {
-        const confirmation = confirm("Are you sure you want to logout");
-
-
-        if(confirmation){
-          logout()
+        const confirmation = confirm("Are you sure you want to logout?");
+        if (confirmation) {
+          logout();
         }
-      }
+      };
     </script>
   </body>
+  
 </html>

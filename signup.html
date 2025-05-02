@@ -21,7 +21,12 @@
           required
           placeholder="Confirm Password"
         />
-        <button type="submit">Sign Up</button>
+        <button type="submit" id="signupButton">
+          <span class="button-content">
+            <span class="button-spinner" style="visibility: hidden;"></span>
+            <span class="button-text">Sign Up</span>
+          </span>
+        </button>
         <p><a href="#login">Back to Login</a></p>
       </form>
     </div>
@@ -29,6 +34,13 @@
     <script src="./js/api.js"></script>
     <script>
       async function signup() {
+        const signupButton = document.getElementById("signupButton");
+        
+        // Show spinner and disable button
+        signupButton.classList.add('button-loading');
+        signupButton.disabled = true;
+        signupButton.querySelector('.button-spinner').style.visibility = 'visible';
+
         const data = {
           first_name: document.getElementById("first_name").value,
           last_name: document.getElementById("last_name").value,
@@ -46,10 +58,15 @@
             "POST",
             data
           );
-            localStorage.setItem("token", response.data.token);
-            window.location.href = '/dashboard.html'
+          localStorage.setItem("token", response.data.token);
+          window.location.href = '/dashboard.html';
         } catch (error) {
           alert(error.message || "Signup failed");
+        } finally {
+          // Hide spinner and re-enable button
+          signupButton.classList.remove('button-loading');
+          signupButton.disabled = false;
+          signupButton.querySelector('.button-spinner').style.visibility = 'hidden';
         }
       }
 

@@ -39,17 +39,33 @@
         <div class="container">
             <p><a href="/dashboard.html">Back to Dashboard</a></p>
             <h2>Edit Profile</h2>
-            <input type="text" id="first_name" placeholder="First Name"/>
-            <input type="text" id="last_name" placeholder="Last Name"/>
-            <input type="text" id="phone" placeholder="Phone"/>
-            <input type="email" id="email" disabled readonly placeholder="Email"/>
-        
-            <button onclick="updateProfile()">Update Profile</button>
+            <form onsubmit="updateProfile(event)">
+                <input type="text" id="first_name" placeholder="First Name"/>
+                <input type="text" id="last_name" placeholder="Last Name"/>
+                <input type="text" id="phone" placeholder="Phone"/>
+                <input type="email" id="email" disabled readonly placeholder="Email"/>
+                <button id="updateProfileBtn">
+                  <span class="button-content">
+                    <span class="button-spinner" style="visibility: hidden;"></span>
+                    <span class="button-text">Update Profile</span>
+                  </span>
+                </button>
+            </form>
+            
+            
             <h3>Change Password</h3>
-            <input type="password" id="old_password" placeholder="Current Password"/>
-            <input type="password" id="new_password" placeholder="New Password"/>
-            <input type="password" id="new_password_confirmation" placeholder="Confirm New Password"/>
-            <button onclick="changePassword()">Change Password</button>
+            <form onsubmit="changePassword(event)">
+                <input type="password" id="old_password" placeholder="Current Password"/>
+                <input type="password" id="new_password" placeholder="New Password"/>
+                <input type="password" id="new_password_confirmation" placeholder="Confirm New Password"/>
+                <button id="changePasswordBtn">
+                  <span class="button-content">
+                    <span class="button-spinner" style="visibility: hidden;"></span>
+                    <span class="button-text">Change Password</span>
+                  </span>
+                </button>
+            </form>
+            
             
         </div>
       </main>
@@ -63,7 +79,6 @@
     let user;
     window.addEventListener("DOMContentLoaded", async () => {
         try {
-
             user = await getAuthUser();
 
             document.getElementById("first_name").value = user.first_name;
@@ -78,7 +93,15 @@
         }
     });
 
-    async function updateProfile() {
+    async function updateProfile(event) {
+        event.preventDefault();
+        const updateBtn = document.getElementById("updateProfileBtn");
+        
+        // Show spinner and disable button
+        updateBtn.classList.add('button-loading');
+        updateBtn.disabled = true;
+        updateBtn.querySelector('.button-spinner').style.visibility = 'visible';
+
         const data = {
             first_name: document.getElementById("first_name").value,
             last_name : document.getElementById("last_name").value,
@@ -92,21 +115,45 @@
         catch (error) {
             alert(error.message || "Profile update failed");
         }
-
+        finally {
+            // Hide spinner and re-enable button
+            updateBtn.classList.remove('button-loading');
+            updateBtn.disabled = false;
+            updateBtn.querySelector('.button-spinner').style.visibility = 'hidden';
+        }
     }
 
-    async function changePassword() {
+    async function changePassword(event) {
+        event.preventDefault();
+        const changePassBtn = document.getElementById("changePasswordBtn");
+        
+        // Show spinner and disable button
+        changePassBtn.classList.add('button-loading');
+        changePassBtn.disabled = true;
+        changePassBtn.querySelector('.button-spinner').style.visibility = 'visible';
+
         try {
             const res = await apiRequest(`/projects/${CONFIG.projectId}/auth/change-password`, "POST", {
-                old_password             : document.getElementById("old_password").value,
-                new_password             : document.getElementById("new_password").value,
+                old_password: document.getElementById("old_password").value,
+                new_password: document.getElementById("new_password").value,
                 new_password_confirmation: document.getElementById("new_password_confirmation").value
             }, true);
             alert(res.message || "Password changed");
-        }catch (error) {
+            
+            // Clear password fields on success
+            document.getElementById("old_password").value = '';
+            document.getElementById("new_password").value = '';
+            document.getElementById("new_password_confirmation").value = '';
+        }
+        catch (error) {
             alert(error.message || "Password change failed");
         }
-
+        finally {
+            // Hide spinner and re-enable button
+            changePassBtn.classList.remove('button-loading');
+            changePassBtn.disabled = false;
+            changePassBtn.querySelector('.button-spinner').style.visibility = 'hidden';
+        }
     }
 
     const confirmLogout = () => {
@@ -141,4 +188,3 @@
 </script>
 </body>
 </html>
-

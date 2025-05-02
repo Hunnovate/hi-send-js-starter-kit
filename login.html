@@ -9,9 +9,17 @@
   <body>
     <div class="container">
       <h2>Login</h2>
-      <input type="email" id="email" placeholder="Email" />
-      <input type="password" id="password" placeholder="Password" />
-      <button onclick="login()">Login</button>
+      <form onsubmit="login(event)">
+        <input type="email" id="email" placeholder="Email" />
+        <input type="password" id="password" placeholder="Password" />
+        <button id="loginButton">
+          <span class="button-content">
+            <span class="button-spinner" style="visibility: hidden;"></span>
+            <span class="button-text">Login</span>
+          </span>
+        </button>
+      </form>
+      
       <p>
         <a href="/signup.html">Sign Up</a> |
         <a href="/forgot-password">Forgot Password?</a>
@@ -20,9 +28,17 @@
     <script src="./config.js"></script>
     <script src="./js/api.js"></script>
     <script>
-      const login = async () => {
+      const login = async (event) => {
+        event.preventDefault(); // Prevent form submission
+        
         const email = document.getElementById("email").value;
         const password = document.getElementById("password").value;
+        const loginButton = document.getElementById("loginButton");
+        
+        // Show spinner and disable button
+        loginButton.classList.add('button-loading');
+        loginButton.disabled = true;
+        loginButton.querySelector('.button-spinner').style.visibility = 'visible';
 
         try {
           const response = await apiRequest(`/projects/${CONFIG.projectId}/auth/login`, "POST", {
@@ -31,10 +47,14 @@
           });
           
           localStorage.setItem("token", response.data.token);
-          window.location.href = '/dashboard.html'
+          window.location.href = '/dashboard.html';
 
         } catch (error) {
           alert(error.message || "Login failed");
+          // Hide spinner and re-enable button on error
+          loginButton.classList.remove('button-loading');
+          loginButton.disabled = false;
+          loginButton.querySelector('.button-spinner').style.visibility = 'hidden';
         }
       }
     </script>

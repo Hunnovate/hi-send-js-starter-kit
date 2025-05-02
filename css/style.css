@@ -4,9 +4,6 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   min-height: 100vh;
   width: 100%;
 }
@@ -16,8 +13,12 @@ body {
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 400px;
+  max-width: 500px;
+  margin: 0 20px;
 }
+
+
+
 input {
   width: 100%;
   padding-top: 0.75rem;
@@ -54,6 +55,18 @@ button:hover {
   left: 0;
   top: 0;
   min-height: 100vh;
+  z-index: 999;
+}
+
+.sidebar-close {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0.5rem;
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: white;
 }
 
 .sidebar-title {
@@ -77,10 +90,148 @@ button:hover {
 
 .main-content {
   flex-grow: 1;
+  padding-top: 80px; /* Space below fixed header */
+  margin-left: 200px; /* Makes room for sidebar */
+  background: #f4f4f4;
+  width: 100;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: center;
-  background: #f4f4f4;
-  width: 100vh;
+  align-items: flex-start;
 }
+
+/* Reset box-sizing for all */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.header {
+  background-color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  position: fixed;
+  top: 0;
+  left: 200px;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
+}
+
+.hamburger {
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  color: black;
+  cursor: pointer;
+  display: none;
+}
+
+
+
+
+.header .header-right {
+  position: relative;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: white;
+}
+
+.popover-wrapper {
+  position: relative;
+}
+
+.popover {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 120%;
+  background: white;
+  color: black;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 0.5rem;
+  min-width: 100px;
+  width: 200px;
+  z-index: 1001;
+}
+
+.show-popover {
+  display: block;
+}
+
+.popover.show {
+  display: block;
+}
+
+.popover button {
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  width: 100%;
+  cursor: pointer;
+  text-align: left;
+}
+
+.popover button:hover {
+  background-color: #f0f0f0;
+}
+
+.sidebar-hidden {
+  display: none;
+}
+
+.placeholder {
+  display: block;
+}
+
+/* Adjust layout for small screens */
+@media (max-width: 768px) {
+  .header {
+    left: 0;
+  }
+
+  .header .hamburger {
+    display: block;
+  }
+
+
+  .sidebar {
+    transform: translateX(-100%);
+    z-index: 9999;
+    transition: transform 0.3s ease-in-out
+  }
+  .sidebar-close {
+    display: block;
+  }
+
+  .sidebar.sidebar-visible {
+    transform: translateX(0);
+  }
+
+  .placeholder {
+    display: none;
+  }
+
+  .layout {
+    flex-direction: column;
+  }
+
+  .main-content {
+    margin-left: 0;
+  }
+  
+}
+
+
+
 

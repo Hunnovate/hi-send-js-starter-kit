@@ -5,23 +5,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hi-Send Starter Kit</title>
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   </head>
   <body>
-    <aside class="sidebar">
-      <h3 class="sidebar-title">Menu</h3>
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-close" id="close-btn" >
+        <span>x</span>
+      </div>
+      <h3 class="sidebar-title">Hi-Send</h3>
       <nav class="sidebar-menu">
-        <a href="/profile.html">Edit Profile</a>
+        <a href="/profile.html">Profile</a>
         <a onclick="confirmLogout()">Logout</a>
       </nav>
     </aside>
-    <div class="layout">
-      <main class="main-content">
-        <div class="container">
-          <h2 id="welcome-message">Welcome!</h2>
+
+    <!-- Header -->
+    <header class="header">
+      <div class="left">
+        <span id="hamburger" class="hamburger">&#9776;</span>
+        <span class="placeholder"></span>
+      </div>
+      <div class="right">
+        <div class="popover-wrapper">
+          <i id="user-icon" class="fa-solid fa-circle-user icon-btn" style="color: black;"></i>
+          <div id="popover" class="popover">
+            <button style="margin-bottom: 8px;"><a href="/profile.html" style="color: black; text-decoration: none;">Profile</a></button>
+            <button onclick="confirmLogout()" style="color: black;">Logout</button>
+          </div>
         </div>
-      </main>
-    </div>
-  
+      </div>
+    </header>
+
+    <!-- Layout -->
+    <main class="main-content">
+      <div class="container">
+        <h2 id="welcome-message">Welcome!</h2>
+      </div>
+    </main>
+
+    <!-- Scripts -->
     <script src="config.js"></script>
     <script src="./js/app.js"></script>
     <script src="./js/api.js"></script>
@@ -30,27 +53,48 @@
       window.addEventListener("DOMContentLoaded", async () => {
         try {
           user = await getAuthUser();
-          console.log(user);
           document.getElementById("welcome-message").textContent =
             "Welcome, " + (user.full_name || "User") + "!";
         } catch (error) {
           window.location.href = "/login.html";
         }
       });
-  
+
       const logout = async () => {
         await apiRequest(`/projects/${CONFIG.projectId}/auth/logout`, "POST");
         localStorage.removeItem("token");
         window.location.href = "/login.html";
       };
-  
+
       const confirmLogout = () => {
         const confirmation = confirm("Are you sure you want to logout?");
-        if (confirmation) {
-          logout();
-        }
+        if (confirmation) logout();
       };
+
+      
+      // Add event listener to the close button
+      document.getElementById("close-btn").addEventListener("click", () => {
+        document.getElementById("sidebar").classList.toggle("sidebar-visible")
+      });
+
+      // Sidebar toggle
+      document.getElementById("hamburger").addEventListener("click", () => {
+        document.getElementById("sidebar").classList.toggle("sidebar-visible");
+      });
+
+      // Popover toggle
+      document.getElementById("user-icon").addEventListener("click", () => {
+        document.getElementById("popover").classList.toggle("show");
+      });
+
+      // Hide popover on outside click
+      window.addEventListener("click", (e) => {
+        const popover = document.getElementById("popover");
+        const icon = document.getElementById("user-icon");
+        if (!popover.contains(e.target) && !icon.contains(e.target)) {
+          popover.classList.remove("show");
+        }
+      });
     </script>
   </body>
-  
 </html>

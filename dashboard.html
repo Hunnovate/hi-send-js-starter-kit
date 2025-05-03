@@ -15,6 +15,7 @@
       </div>
       <h3 class="sidebar-title">Hi-Send</h3>
       <nav class="sidebar-menu">
+        <p><a href="/dashboard.html">Dashboard</a></p>
         <a href="/profile.html">Profile</a>
         <a onclick="confirmLogout()">Logout</a>
       </nav>
@@ -39,17 +40,17 @@
 
     <!-- Layout -->
     <main class="main-content">
-      <div class="container">
-        <h2 id="welcome-message">Welcome!</h2>
+      <div class="container" style="max-width: none;">
+        <h2 id="welcome-message" style="margin-bottom: 50px;">Welcome!</h2>
 
-        <div id="verification-alerts">
-          <div id="email-alert" class="alert" style="display: none; background: #fff3cd; border: 1px solid #ffeeba; padding: 12px; margin: 10px 0; border-radius: 4px;">
-            <p style="margin: 0 0 10px 0;">
-              <i class="fa-solid fa-triangle-exclamation" style="color: #856404;"></i>
+        <div id="verification-alerts" style=" display: flex;  align-items: center; justify-content: space-between; gap: 30px;">
+          <div id="email-alert" class="alert" style="display: none; background: #eaeaea; padding: 12px; margin: 10px 0; border-radius: 4px;  min-height: 240px; width: 100%;">
+            <i class="fa-solid fa-triangle-exclamation" style="color: #FFBF00; font-size: 50px; margin-bottom: 16px;"></i>
+            <p style="margin: 0 0 10px 0; text-align: center;">
               Your email is not verified <span id="email-placeholder"></span>
             </p>
             <button onclick="sendEmailVerification()" class="verify-btn">
-              <span class="btn-text">Send Verification Email</span>
+              <span class="btn-text" >Send Verification Email</span>
               <span class="spinner" style="display: none;"></span>
             </button>
             <div id="email-verification-form" style="display: none; margin-top: 10px;">
@@ -61,9 +62,9 @@
             </div>
           </div>
 
-          <div id="phone-alert" class="alert" style="display: none; background: #fff3cd; border: 1px solid #ffeeba; padding: 12px; margin: 10px 0; border-radius: 4px;">
-            <p style="margin: 0 0 10px 0;">
-              <i class="fa-solid fa-triangle-exclamation" style="color: #856404;"></i>
+          <div id="phone-alert" class="alert" style="display: none; background: #eaeaea; padding: 12px; margin: 10px 0; border-radius: 4px; min-height: 240px; width: 100%;">
+            <i class="fa-solid fa-triangle-exclamation" style="color: #FFBF00; font-size: 50px; margin-bottom: 16px;"></i>
+            <p style="margin: 0 0 10px 0; text-align: center;">
               Your phone number is not verified <span id="phone-placeholder"></span>
             </p>
             <button onclick="sendPhoneVerification('sms')" class="verify-btn">
@@ -100,12 +101,18 @@
 
           // Check verification status
           if (!user.email_verified_at) {
-            document.getElementById("email-alert").style.display = "block";
+            document.getElementById("email-alert").style.display = "flex";
+            document.getElementById("email-alert").style.flexDirection = "column";
+            document.getElementById("email-alert").style.justifyContent = "center";
+            document.getElementById("email-alert").style.alignItems = "center";
             document.getElementById("email-placeholder").textContent = ` (${user.email})`;
 
           }
           if (!user.phone_verified_at) {
-            document.getElementById("phone-alert").style.display = "block";
+            document.getElementById("phone-alert").style.display = "flex";
+            document.getElementById("phone-alert").style.flexDirection = "column";
+            document.getElementById("phone-alert").style.justifyContent = "center";
+            document.getElementById("phone-alert").style.alignItems = "center";
             document.getElementById("phone-placeholder").textContent = ` (${user.phone})`;
           }
         } catch (error) {
@@ -213,6 +220,30 @@
           spinner.style.display = 'none';
         }
       }
+
+      // Add event listener to the close button
+      document.getElementById("close-btn").addEventListener("click", () => {
+        document.getElementById("sidebar").classList.toggle("sidebar-visible")
+      });
+
+      // Sidebar toggle
+      document.getElementById("hamburger").addEventListener("click", () => {
+        document.getElementById("sidebar").classList.toggle("sidebar-visible");
+      });
+
+      // Popover toggle
+      document.getElementById("user-icon").addEventListener("click", () => {
+        document.getElementById("popover").classList.toggle("show");
+      });
+
+      // Hide popover on outside click
+      window.addEventListener("click", (e) => {
+        const popover = document.getElementById("popover");
+        const icon = document.getElementById("user-icon");
+        if (!popover.contains(e.target) && !icon.contains(e.target)) {
+          popover.classList.remove("show");
+        }
+      });
     </script>
   </body>
 </html>

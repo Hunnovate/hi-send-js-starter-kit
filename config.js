@@ -1,5 +1,5 @@
 const CONFIG = {
-  baseUrl: "https://payday_api.test/api/v1",
-  apiKey: "gPLWSKjtTJ2VWZH2eAQlmNfX",
-  projectId: "01jt8rjz39mxgc4meqa0vxe289"
+  baseUrl: "https://pay.hunnovate.com/api/v1",
+  apiKey: "5fkdGe4mipoyLH7Y1pvISWx3",
+  projectId: "01jt91vab73f15jg3n7jarr9aj"
 };

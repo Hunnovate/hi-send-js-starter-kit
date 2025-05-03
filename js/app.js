@@ -17,6 +17,12 @@ const getAuthUser = async () => {
     })
 }
 
+const logout = async () => {
+    await apiRequest(`/projects/${CONFIG.projectId}/auth/logout`, "POST");
+    localStorage.removeItem("token");
+    window.location.href = "/login.html";
+  };
+
 const confirmLogout = () => {
     const confirmation = confirm("Are you sure you want to logout?");
     if (confirmation) {

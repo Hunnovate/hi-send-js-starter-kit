@@ -5,7 +5,10 @@ const getAuthUser = async () => {
                 `/projects/${CONFIG.projectId}/auth/user`,
             ).then((response) => {
                 resolve(response.data);
-            });
+            }).catch(() => {
+                localStorage.removeItem('token')
+               location.href = "/login"
+           })
 
         }
         catch (error) {

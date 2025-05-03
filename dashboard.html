@@ -41,6 +41,48 @@
     <main class="main-content">
       <div class="container">
         <h2 id="welcome-message">Welcome!</h2>
+
+        <div id="verification-alerts">
+          <div id="email-alert" class="alert" style="display: none; background: #fff3cd; border: 1px solid #ffeeba; padding: 12px; margin: 10px 0; border-radius: 4px;">
+            <p style="margin: 0 0 10px 0;">
+              <i class="fa-solid fa-triangle-exclamation" style="color: #856404;"></i>
+              Your email is not verified <span id="email-placeholder"></span>
+            </p>
+            <button onclick="sendEmailVerification()" class="verify-btn">
+              <span class="btn-text">Send Verification Email</span>
+              <span class="spinner" style="display: none;"></span>
+            </button>
+            <div id="email-verification-form" style="display: none; margin-top: 10px;">
+              <input type="text" id="email-code" placeholder="Enter verification code" style="margin-bottom: 10px;">
+              <button onclick="verifyEmail()" class="verify-btn">
+                <span class="btn-text">Verify Email</span>
+                <span class="spinner" style="display: none;"></span>
+              </button>
+            </div>
+          </div>
+
+          <div id="phone-alert" class="alert" style="display: none; background: #fff3cd; border: 1px solid #ffeeba; padding: 12px; margin: 10px 0; border-radius: 4px;">
+            <p style="margin: 0 0 10px 0;">
+              <i class="fa-solid fa-triangle-exclamation" style="color: #856404;"></i>
+              Your phone number is not verified <span id="phone-placeholder"></span>
+            </p>
+            <button onclick="sendPhoneVerification('sms')" class="verify-btn">
+              <span class="btn-text">Send SMS Code</span>
+              <span class="spinner" style="display: none;"></span>
+            </button>
+            <button onclick="sendPhoneVerification('whatsapp')" class="verify-btn">
+              <span class="btn-text">Send Whatsapp Code</span>
+              <span class="spinner" style="display: none;"></span>
+            </button>
+            <div id="phone-verification-form" style="display: none; margin-top: 10px;">
+              <input type="text" id="phone-code" placeholder="Enter verification code" style="margin-bottom: 10px;">
+              <button onclick="verifyPhone()" class="verify-btn">
+                <span class="btn-text">Verify Phone</span>
+                <span class="spinner" style="display: none;"></span>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </main>
 
@@ -54,47 +96,123 @@
         try {
           user = await getAuthUser();
           document.getElementById("welcome-message").textContent =
-            "Welcome, " + (user.full_name || "User") + "!";
+                  "Welcome, " + (user.full_name || "User") + "!";
+
+          // Check verification status
+          if (!user.email_verified_at) {
+            document.getElementById("email-alert").style.display = "block";
+            document.getElementById("email-placeholder").textContent = ` (${user.email})`;
+
+          }
+          if (!user.phone_verified_at) {
+            document.getElementById("phone-alert").style.display = "block";
+            document.getElementById("phone-placeholder").textContent = ` (${user.phone})`;
+          }
         } catch (error) {
           window.location.href = "/login.html";
         }
       });
 
-      const logout = async () => {
-        await apiRequest(`/projects/${CONFIG.projectId}/auth/logout`, "POST");
-        localStorage.removeItem("token");
-        window.location.href = "/login.html";
-      };
+      async function sendEmailVerification() {
+        const button = event.target;
+        const btnText = button.querySelector('.btn-text');
+        const spinner = button.querySelector('.spinner');
 
-      const confirmLogout = () => {
-        const confirmation = confirm("Are you sure you want to logout?");
-        if (confirmation) logout();
-      };
+        try {
+          button.disabled = true;
+          btnText.style.display = 'none';
+          spinner.style.display = 'inline-block';
 
-      
-      // Add event listener to the close button
-      document.getElementById("close-btn").addEventListener("click", () => {
-        document.getElementById("sidebar").classList.toggle("sidebar-visible")
-      });
-
-      // Sidebar toggle
-      document.getElementById("hamburger").addEventListener("click", () => {
-        document.getElementById("sidebar").classList.toggle("sidebar-visible");
-      });
-
-      // Popover toggle
-      document.getElementById("user-icon").addEventListener("click", () => {
-        document.getElementById("popover").classList.toggle("show");
-      });
-
-      // Hide popover on outside click
-      window.addEventListener("click", (e) => {
-        const popover = document.getElementById("popover");
-        const icon = document.getElementById("user-icon");
-        if (!popover.contains(e.target) && !icon.contains(e.target)) {
-          popover.classList.remove("show");
+         const response = await apiRequest(`/otp?project_id=${CONFIG.projectId}`, "POST", {
+            customer_identifier: user.email,
+            channel: 'email'
+          });
+          document.getElementById('email-verification-form').style.display = 'block';
+          sessionStorage.setItem("reset_reference", response.data.reference);
+          alert("Verification email sent! Please check your inbox.");
+        } catch (error) {
+          alert(error?.message || "Failed to send verification email. Please try again.");
+        } finally {
+          button.disabled = false;
+          btnText.style.display = 'inline';
+          spinner.style.display = 'none';
         }
-      });
+      }
+
+      async function sendPhoneVerification(channel = 'sms') {
+        const button = event.target;
+        const btnText = button.querySelector('.btn-text');
+        const spinner = button.querySelector('.spinner');
+
+        try {
+          button.disabled = true;
+          btnText.style.display = 'none';
+          spinner.style.display = 'inline-block';
+
+          const response  = await apiRequest(`/otp?project_id=${CONFIG.projectId}`, "POST", {
+            customer_identifier: user.phone,
+            channel: channel
+          });
+
+          sessionStorage.setItem("reset_reference", response.data.reference);
+          document.getElementById('phone-verification-form').style.display = 'block';
+          alert("Verification code sent! Please check your phone.");
+        } catch (error) {
+          alert(error?.message || "Failed to send verification code. Please try again.");
+        } finally {
+          button.disabled = false;
+          btnText.style.display = 'inline';
+          spinner.style.display = 'none';
+        }
+      }
+
+      async function verifyEmail() {
+        const button = event.target;
+        const btnText = button.querySelector('.btn-text');
+        const spinner = button.querySelector('.spinner');
+        const code = document.getElementById('email-code').value;
+
+        try {
+          button.disabled = true;
+          btnText.style.display = 'none';
+          spinner.style.display = 'inline-block';
+
+          const otpReference = sessionStorage.getItem('reset_reference');
+          await apiRequest(`/otp/validate?email${user.email}&reference=${otpReference}&otp=${code}`, "GET");
+          document.getElementById('email-alert').style.display = 'none';
+          alert("Email verified successfully!");
+        } catch (error) {
+          alert(error?.message || "Invalid verification code. Please try again.");
+        } finally {
+          button.disabled = false;
+          btnText.style.display = 'inline';
+          spinner.style.display = 'none';
+        }
+      }
+
+      async function verifyPhone() {
+        const button = event.target;
+        const btnText = button.querySelector('.btn-text');
+        const spinner = button.querySelector('.spinner');
+        const code = document.getElementById('phone-code').value;
+
+        try {
+          button.disabled = true;
+          btnText.style.display = 'none';
+          spinner.style.display = 'inline-block';
+
+          const otpReference = sessionStorage.getItem('reset_reference');
+          await apiRequest(`/otp/validate?email${user.email}&reference=${otpReference}&otp=${code}`, "GET");
+          document.getElementById('phone-alert').style.display = 'none';
+          alert("Phone verified successfully!");
+        } catch (error) {
+          alert("Invalid verification code. Please try again.");
+        } finally {
+          button.disabled = false;
+          btnText.style.display = 'inline';
+          spinner.style.display = 'none';
+        }
+      }
     </script>
   </body>
 </html>

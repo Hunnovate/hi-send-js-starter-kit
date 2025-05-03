@@ -16,3 +16,10 @@ const getAuthUser = async () => {
         }
     })
 }
+
+const confirmLogout = () => {
+    const confirmation = confirm("Are you sure you want to logout?");
+    if (confirmation) {
+        logout();
+    }
+};

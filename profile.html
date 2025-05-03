@@ -5,71 +5,74 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Hi-Send Starter Kit</title>
     <link rel="stylesheet" href="css/style.css"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+          integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
 </head>
 <body>
-    <aside id="sidebar" class="sidebar">
-        <div class="sidebar-close" id="close-btn" >
-            <i class="fa-solid fa-x"></i>
-        </div>
-        <h3 class="sidebar-title">Hi-Send</h3>
-        <nav class="sidebar-menu">
-          <p><a href="/dashboard.html">Dashboard</a></p>
-          <a href="/profile.html">Profile</a>
-          <a onclick="confirmLogout()">Logout</a>
-        </nav>
-      </aside>
-  
-      <!-- Header -->
-      <header class="header">
-        <div class="left">
-          <span id="hamburger" class="hamburger">&#9776;</span>
-          <span class="placeholder"></span>
-        </div>
-        <div class="right">
-          <div class="popover-wrapper">
+<aside id="sidebar" class="sidebar">
+    <div class="sidebar-close" id="close-btn">
+        <i class="fa-solid fa-x"></i>
+    </div>
+    <h3 class="sidebar-title">Hi-Send</h3>
+    <nav class="sidebar-menu">
+        <p><a href="/dashboard.html">Dashboard</a></p>
+        <a href="/profile.html">Profile</a>
+        <a onclick="confirmLogout()">Logout</a>
+    </nav>
+</aside>
+
+<!-- Header -->
+<header class="header">
+    <div class="left">
+        <span id="hamburger" class="hamburger">&#9776;</span>
+        <span class="placeholder"></span>
+    </div>
+    <div class="right">
+        <div class="popover-wrapper">
             <i id="user-icon" class="fa-solid fa-circle-user icon-btn" style="color: black;"></i>
             <div id="popover" class="popover">
-              <button style="margin-bottom: 8px;"><a href="/profile.html" style="color: black; text-decoration: none;">Profile</a></button>
-              <button onclick="confirmLogout()" style="color: black;">Logout</button>
+                <button style="margin-bottom: 8px;"><a href="/profile.html"
+                                                       style="color: black; text-decoration: none;">Profile</a></button>
+                <button onclick="confirmLogout()" style="color: black;">Logout</button>
             </div>
-          </div>
         </div>
-      </header>
-      <main class="main-content">
-        <div class="container">
-            <p><a href="/dashboard.html">Back to Dashboard</a></p>
-            <h2>Edit Profile</h2>
-            <form onsubmit="updateProfile(event)">
-                <input type="text" id="first_name" placeholder="First Name"/>
-                <input type="text" id="last_name" placeholder="Last Name"/>
-                <input type="text" id="phone" placeholder="Phone"/>
-                <input type="email" id="email" placeholder="Email" />
-                <button id="updateProfileBtn">
+    </div>
+</header>
+<main class="main-content">
+    <div class="container">
+        <p><a href="/dashboard.html">Back to Dashboard</a></p>
+        <h2>Edit Profile</h2>
+        <form onsubmit="updateProfile(event)">
+            <input type="text" id="first_name" placeholder="First Name"/>
+            <input type="text" id="last_name" placeholder="Last Name"/>
+            <input type="text" id="phone" placeholder="Phone"/>
+            <input type="email" id="email" placeholder="Email"/>
+            <button id="updateProfileBtn">
                   <span class="button-content">
                     <span class="button-spinner" style="visibility: hidden;"></span>
                     <span class="button-text">Update Profile</span>
                   </span>
-                </button>
-            </form>
-            
-            
-            <h3>Change Password</h3>
-            <form onsubmit="changePassword(event)">
-                <input type="password" id="old_password" placeholder="Current Password"/>
-                <input type="password" id="new_password" placeholder="New Password"/>
-                <input type="password" id="new_password_confirmation" placeholder="Confirm New Password"/>
-                <button id="changePasswordBtn">
+            </button>
+        </form>
+
+
+        <h3>Change Password</h3>
+        <form onsubmit="changePassword(event)">
+            <input type="password" id="old_password" placeholder="Current Password"/>
+            <input type="password" id="new_password" placeholder="New Password"/>
+            <input type="password" id="new_password_confirmation" placeholder="Confirm New Password"/>
+            <button id="changePasswordBtn">
                   <span class="button-content">
                     <span class="button-spinner" style="visibility: hidden;"></span>
                     <span class="button-text">Change Password</span>
                   </span>
-                </button>
-            </form>
-            
-            
-        </div>
-      </main>
+            </button>
+        </form>
+
+
+    </div>
+</main>
 
 
 <script src="./config.js"></script>
@@ -97,7 +100,7 @@
     async function updateProfile(event) {
         event.preventDefault();
         const updateBtn = document.getElementById("updateProfileBtn");
-        
+
         // Show spinner and disable button
         updateBtn.classList.add('button-loading');
         updateBtn.disabled = true;
@@ -128,7 +131,7 @@
     async function changePassword(event) {
         event.preventDefault();
         const changePassBtn = document.getElementById("changePasswordBtn");
-        
+
         // Show spinner and disable button
         changePassBtn.classList.add('button-loading');
         changePassBtn.disabled = true;
@@ -136,12 +139,12 @@
 
         try {
             const res = await apiRequest(`/projects/${CONFIG.projectId}/auth/change-password`, "POST", {
-                old_password: document.getElementById("old_password").value,
-                new_password: document.getElementById("new_password").value,
+                old_password             : document.getElementById("old_password").value,
+                new_password             : document.getElementById("new_password").value,
                 new_password_confirmation: document.getElementById("new_password_confirmation").value
             }, true);
             alert(res.message || "Password changed");
-            
+
             // Clear password fields on success
             document.getElementById("old_password").value = '';
             document.getElementById("new_password").value = '';
@@ -158,35 +161,28 @@
         }
     }
 
-    const confirmLogout = () => {
-        const confirmation = confirm("Are you sure you want to logout?");
-        if (confirmation) {
-          logout();
-        }
-      };
-
-      document.getElementById("close-btn").addEventListener("click", () => {
+    document.getElementById("close-btn").addEventListener("click", () => {
         document.getElementById("sidebar").classList.toggle("sidebar-visible")
-      });
+    });
 
-      // Sidebar toggle
-      document.getElementById("hamburger").addEventListener("click", () => {
+    // Sidebar toggle
+    document.getElementById("hamburger").addEventListener("click", () => {
         document.getElementById("sidebar").classList.toggle("sidebar-visible");
-      });
+    });
 
-      // Popover toggle
-      document.getElementById("user-icon").addEventListener("click", () => {
+    // Popover toggle
+    document.getElementById("user-icon").addEventListener("click", () => {
         document.getElementById("popover").classList.toggle("show");
-      });
+    });
 
-      // Hide popover on outside click
-      window.addEventListener("click", (e) => {
+    // Hide popover on outside click
+    window.addEventListener("click", (e) => {
         const popover = document.getElementById("popover");
         const icon = document.getElementById("user-icon");
         if (!popover.contains(e.target) && !icon.contains(e.target)) {
-          popover.classList.remove("show");
+            popover.classList.remove("show");
         }
-      });
+    });
 </script>
 </body>
 </html>

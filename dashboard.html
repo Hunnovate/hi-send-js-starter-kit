@@ -44,12 +44,12 @@
         <h2 id="welcome-message" style="margin-bottom: 50px;">Welcome!</h2>
 
         <div id="verification-alerts" style=" display: flex;  align-items: center; justify-content: space-between; gap: 30px;">
-          <div id="email-alert" class="alert" style="display: none; background: #eaeaea; padding: 12px; margin: 10px 0; border-radius: 4px;  min-height: 250px; width: 100%;">
+          <div id="email-alert" class="alert" style="display: none; background: #eaeaea; padding: 12px; margin: 10px 0; border-radius: 4px;  min-height: 350px; width: 100%;">
             <i class="fa-solid fa-triangle-exclamation" style="color: #FFBF00; font-size: 50px; margin-bottom: 16px;"></i>
             <p style=" text-align: center;">
               Your email is not verified <span id="email-placeholder"></span>
             </p>
-            <p style="text-align: center;">Not your email? <span style="text-decoration: overline; color: brown;">Go back</span></p>
+            <p style="text-align: center;">Not your email? <a href="/profile.html" style="text-decoration: underline; color: brown; cursor: pointer;">Change</a></p>
             <button onclick="sendEmailVerification()" class="verify-btn">
               <span class="btn-text" >Send Verification Email</span>
               <span class="spinner" style="display: none;"></span>
@@ -63,11 +63,12 @@
             </div>
           </div>
 
-          <div id="phone-alert" class="alert" style="display: none; background: #eaeaea; padding: 12px; margin: 10px 0; border-radius: 4px; min-height: 250px; width: 100%;">
+          <div id="phone-alert" class="alert" style="display: none; background: #eaeaea; padding: 12px; margin: 10px 0; border-radius: 4px; min-height: 350px; width: 100%;">
             <i class="fa-solid fa-triangle-exclamation" style="color: #FFBF00; font-size: 50px; margin-bottom: 16px;"></i>
             <p style="text-align: center;">
               Your phone number is not verified <span id="phone-placeholder"></span>
             </p>
+            <p style="text-align: center;">Not your Phone? <a href="/profile.html" style="text-decoration: underline; color: brown; cursor: pointer;">Change</a></p>
             <button onclick="sendPhoneVerification('sms')" class="verify-btn">
               <span class="btn-text">Send SMS Code</span>
               <span class="spinner" style="display: none;"></span>
@@ -169,8 +170,10 @@
           alert(error?.message || "Failed to send verification code. Please try again.");
         } finally {
           button.disabled = false;
+          if(btnText){
           btnText.style.display = 'inline';
           spinner.style.display = 'none';
+        }
         }
       }
 
@@ -186,7 +189,11 @@
           spinner.style.display = 'inline-block';
 
           const otpReference = sessionStorage.getItem('reset_reference');
-          await apiRequest(`/otp/validate?email${user.email}&reference=${otpReference}&otp=${code}`, "GET");
+          await apiRequest(`/projects/${CONFIG.projectId}/auth/email/verify`, "PUT", {
+            otp: code,
+            otp_reference: otpReference,
+            email: user.email
+          });
           document.getElementById('email-alert').style.display = 'none';
           alert("Email verified successfully!");
         } catch (error) {
@@ -204,13 +211,19 @@
         const spinner = button.querySelector('.spinner');
         const code = document.getElementById('phone-code').value;
 
-        try {
-          button.disabled = true;
+        button.disabled = true;
           btnText.style.display = 'none';
           spinner.style.display = 'inline-block';
 
+        try {
+
+
           const otpReference = sessionStorage.getItem('reset_reference');
-          await apiRequest(`/otp/validate?email${user.email}&reference=${otpReference}&otp=${code}`, "GET");
+          await apiRequest(`/projects/${CONFIG.projectId}/auth/phone/verify`, "PUT", {
+            otp: code,
+            otp_reference: otpReference,
+            phone: user.phone
+          });
           document.getElementById('phone-alert').style.display = 'none';
           alert("Phone verified successfully!");
         } catch (error) {

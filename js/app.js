@@ -7,7 +7,7 @@ const getAuthUser = async () => {
                 resolve(response.data);
             }).catch(() => {
                 localStorage.removeItem('token')
-               location.href = "/login"
+               location.href = "/login.html"
            })
 
         }

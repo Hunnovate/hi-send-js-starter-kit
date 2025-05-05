@@ -14,12 +14,17 @@
     <div class="sidebar-close" id="close-btn">
         <i class="fa-solid fa-x"></i>
     </div>
-    <h3 class="sidebar-title">Hi-Send</h3>
-    <nav class="sidebar-menu">
-        <p><a href="/dashboard.html">Dashboard</a></p>
-        <a href="/profile.html">Profile</a>
-        <a onclick="confirmLogout()">Logout</a>
-    </nav>
+    <div>
+        <h3 class="sidebar-title">Hi-Send</h3>
+        <nav class="sidebar-menu">
+            <p><a href="/dashboard.html">Dashboard</a></p>
+            <a href="/profile.html">Profile</a>
+            <a href="/contact.html">Contact Us</a>
+            <a onclick="confirmLogout()">Logout</a>
+        </nav>
+    </div>
+    <p class="home-link"><a href="index.html"  style="text-decoration: none; color: white;">Home</a></p>
+    
 </aside>
 
 <!-- Header -->
@@ -40,35 +45,44 @@
     </div>
 </header>
 <main class="main-content">
-    <div class="container">
+    <div class="container" style="max-width: none;">
         <p><a href="/dashboard.html">Back to Dashboard</a></p>
-        <h2>Edit Profile</h2>
-        <form onsubmit="updateProfile(event)">
-            <input type="text" id="first_name" placeholder="First Name"/>
-            <input type="text" id="last_name" placeholder="Last Name"/>
-            <input type="text" id="phone" placeholder="Phone"/>
-            <input type="email" id="email" placeholder="Email"/>
-            <button id="updateProfileBtn">
-                  <span class="button-content">
-                    <span class="button-spinner" style="visibility: hidden;"></span>
-                    <span class="button-text">Update Profile</span>
-                  </span>
-            </button>
-        </form>
+        <div id="edit-profile" style=" display: flex;  align-items: center; justify-content: space-between; gap: 30px;">
+            <div style=" background: #f4f4f4; padding: 12px; margin: 10px 0; border-radius: 4px;  min-height: 350px; width: 100%;">
+                <h2>Edit Profile</h2>
+                <form onsubmit="updateProfile(event)">
+                    <input type="text" id="first_name" placeholder="First Name"/>
+                    <input type="text" id="last_name" placeholder="Last Name"/>
+                    <input type="text" id="phone" placeholder="Phone"/>
+                    <input type="email" id="email" placeholder="Email"/>
+                    <button id="updateProfileBtn">
+                        <span class="button-content">
+                            <span class="button-spinner" style="visibility: hidden;"></span>
+                            <span class="button-text">Update Profile</span>
+                        </span>
+                    </button>
+                </form>
+            </div>
+            <div style=" background: #f4f4f4; padding: 12px; margin: 10px 0; border-radius: 4px;  min-height: 350px; width: 100%;">
+                <h2>Change Password</h2>
+                <form onsubmit="changePassword(event)">
+                    <input type="password" id="old_password" placeholder="Current Password"/>
+                    <input type="password" id="new_password" placeholder="New Password"/>
+                    <input type="password" id="new_password_confirmation" placeholder="Confirm New Password"/>
+                    <button id="changePasswordBtn">
+                        <span class="button-content">
+                            <span class="button-spinner" style="visibility: hidden;"></span>
+                            <span class="button-text">Change Password</span>
+                        </span>
+                    </button>
+                </form>
+            </div>
+            </div>
+            
+        
 
 
-        <h3>Change Password</h3>
-        <form onsubmit="changePassword(event)">
-            <input type="password" id="old_password" placeholder="Current Password"/>
-            <input type="password" id="new_password" placeholder="New Password"/>
-            <input type="password" id="new_password_confirmation" placeholder="Confirm New Password"/>
-            <button id="changePasswordBtn">
-                  <span class="button-content">
-                    <span class="button-spinner" style="visibility: hidden;"></span>
-                    <span class="button-text">Change Password</span>
-                  </span>
-            </button>
-        </form>
+        
 
 
     </div>
@@ -116,6 +130,7 @@
         try {
             const res = await apiRequest(`/projects/${CONFIG.projectId}/auth/user`, "PUT", data, true);
             alert(res.message || "Profile updated");
+            window.location.href = "/dashboard.html";
         }
         catch (error) {
             alert(error.message || "Profile update failed");
@@ -149,6 +164,7 @@
             document.getElementById("old_password").value = '';
             document.getElementById("new_password").value = '';
             document.getElementById("new_password_confirmation").value = '';
+            window.location.href = "/dashboard.html";
         }
         catch (error) {
             alert(error.message || "Password change failed");

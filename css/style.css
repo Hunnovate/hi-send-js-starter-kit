@@ -94,6 +94,14 @@ button:hover {
   background-color: #34495e;
 }
 
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: white;
+  transition: background 0.3s;
+}
+
 .main-content {
   flex-grow: 1;
   padding-top: 80px; /* Space below fixed header */

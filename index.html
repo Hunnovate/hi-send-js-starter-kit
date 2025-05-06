@@ -102,7 +102,7 @@
       document.querySelector('#contact-form').reset();
     } catch (error) {
       console.error(error);
-      alert("Failed to send message. Please try again.");
+      alert(error?.message || "Failed to send message. Please try again.");
     } finally {
       // Restore button
       btnText.style.display = 'inline';

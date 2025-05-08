@@ -10,22 +10,41 @@
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
 </head>
 <body>
-<aside id="sidebar" class="sidebar">
-    <div class="sidebar-close" id="close-btn">
-        <i class="fa-solid fa-x"></i>
-    </div>
-    <div>
-        <h3 class="sidebar-title">Hi-Send</h3>
-        <nav class="sidebar-menu">
-            <p><a href="/dashboard.html">Dashboard</a></p>
-            <a href="/profile.html">Profile</a>
-            <a href="/contact.html">Contact Us</a>
-            <a onclick="confirmLogout()" style="cursor: pointer;"`>Logout</a>
-        </nav>
-    </div>
-    <p class="home-link"><a href="index.html"  style="text-decoration: none; color: white;">Home</a></p>
-    
-</aside>
+    <aside id="sidebar" class="sidebar">
+        <div class="sidebar-close" id="close-btn">
+            <i class="fa-solid fa-x"></i>
+        </div>
+        <div>
+            <h3 class="sidebar-title">Hi-Send</h3>
+            <nav class="sidebar-menu">
+              <a href="/dashboard.html" style="display: flex; align-items: center; gap: 12px;">
+                <i class="fa-solid fa-house-user"></i>
+                <span>Dashboard</span>
+              </a>
+              <a href="/profile.html" style="display: flex; align-items: center; gap: 12px;">
+                <i class="fa-solid fa-user"></i>
+                <span>Profile</span>
+              </a>
+  
+              <a href="/contact.html" style="display: flex; align-items: center; gap: 12px;">
+                <i class="fa-solid fa-comment"></i>
+                <span>Contact Us</span>
+              </a>
+                
+                
+                
+                <a onclick="confirmLogout()" style="cursor: pointer; display: flex; align-items: center; gap: 12px;">
+                  <i class="fa-solid fa-right-from-bracket"></i>
+                  <span>Logout</span>
+                </a>
+            </nav>
+        </div>
+        <a href="/index.html" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: white;">
+          <i class="fa-solid fa-house"></i>
+          <span href="index.html">Home</span>
+        </a>
+        
+    </aside>
 
 <!-- Header -->
 <header class="header">

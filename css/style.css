@@ -52,7 +52,7 @@ button:hover {
   width: 200px;
   background-color: #2c3e50;
   color: white;
-  padding: 1.5rem;
+  padding: 1rem;
   box-shadow: 2px 0 5px rgba(0,0,0,0.1);
   position: fixed;
   left: 0;
@@ -94,13 +94,13 @@ button:hover {
   background-color: #34495e;
 }
 
-.sidebar-link {
+/* .sidebar-link {
   display: flex;
   align-items: center;
   gap: 10px;
   color: white;
   transition: background 0.3s;
-}
+} */
 
 .main-content {
   flex-grow: 1;

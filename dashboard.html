@@ -20,16 +20,16 @@
         </div>
           
           <nav class="sidebar-menu">
-            <a href="/dashboard.html" style="display: flex; align-items: center; gap: 12px;">
+            <a href="dashboard.html" style="display: flex; align-items: center; gap: 12px;">
               <i class="fa-solid fa-house-user"></i>
               <span>Dashboard</span>
             </a>
-            <a href="/profile.html" style="display: flex; align-items: center; gap: 12px;">
+            <a href="profile.html" style="display: flex; align-items: center; gap: 12px;">
               <i class="fa-solid fa-user"></i>
               <span>Profile</span>
             </a>
 
-            <a href="/contact.html" style="display: flex; align-items: center; gap: 12px;">
+            <a href="contact.html" style="display: flex; align-items: center; gap: 12px;">
               <i class="fa-solid fa-comment"></i>
               <span>Contact Us</span>
             </a>
@@ -42,7 +42,7 @@
               </a>
           </nav>
       </div>
-      <a href="/index.html" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: white;">
+      <a href="index.html" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: white;">
         <i class="fa-solid fa-house"></i>
         <span href="index.html">Home</span>
       </a>
@@ -59,7 +59,7 @@
         <div class="popover-wrapper">
           <i id="user-icon" class="fa-solid fa-circle-user icon-btn" style="color: black;"></i>
           <div id="popover" class="popover">
-            <button style="margin-bottom: 8px;"><a href="/profile.html" style="color: black; text-decoration: none;">Profile</a></button>
+            <button style="margin-bottom: 8px;"><a href="profile.html" style="color: black; text-decoration: none;">Profile</a></button>
             <button onclick="confirmLogout()" style="color: black;">Logout</button>
           </div>
         </div>
@@ -77,7 +77,7 @@
             <p style=" text-align: center;">
               Your email is not verified <span id="email-placeholder"></span>
             </p>
-            <p style="text-align: center;">Not your email? <a href="/profile.html" style="text-decoration: underline; color: brown; cursor: pointer;">Change</a></p>
+            <p style="text-align: center;">Not your email? <a href="profile.html" style="text-decoration: underline; color: brown; cursor: pointer;">Change</a></p>
             <button onclick="sendEmailVerification()" class="verify-btn">
               <span class="btn-text" >Send Verification Email</span>
               <span class="spinner" style="display: none;"></span>
@@ -96,7 +96,7 @@
             <p style="text-align: center;">
               Your phone number is not verified <span id="phone-placeholder"></span>
             </p>
-            <p style="text-align: center;">Not your Phone? <a href="/profile.html" style="text-decoration: underline; color: brown; cursor: pointer;">Change</a></p>
+            <p style="text-align: center;">Not your Phone? <a href="profile.html" style="text-decoration: underline; color: brown; cursor: pointer;">Change</a></p>
             <button onclick="sendPhoneVerification('sms')" class="verify-btn">
               <span class="btn-text">Send SMS Code</span>
               <span class="spinner" style="display: none;"></span>
@@ -146,7 +146,7 @@
             document.getElementById("phone-placeholder").textContent = ` (${user.phone})`;
           }
         } catch (error) {
-          window.location.href = "/login.html";
+          window.location.href = "login.html";
         }
       });
 
@@ -156,9 +156,17 @@
         const spinner = button.querySelector('.spinner');
 
         try {
-          button.disabled = true;
-          btnText.style.display = 'none';
-          spinner.style.display = 'inline-block';
+          if(btnText) {
+            btnText.style.display = 'none';
+          }
+
+          if(spinner) {
+            spinner.style.display = 'inline-block';
+          }
+
+          if(button) {
+            button.disabled = true;
+          }
 
          const response = await apiRequest(`/otp?project_id=${CONFIG.projectId}`, "POST", {
             customer_identifier: user.email,
@@ -182,9 +190,15 @@
         const spinner = button.querySelector('.spinner');
 
         try {
-          button.disabled = true;
-          btnText.style.display = 'none';
-          spinner.style.display = 'inline-block';
+          if(btnText) {
+            btnText.style.display = 'none';
+          }
+          if(spinner) {
+            spinner.style.display = 'inline-block';
+          }
+          if(button) {
+            button.disabled = true;
+          }
 
           const response  = await apiRequest(`/otp?project_id=${CONFIG.projectId}`, "POST", {
             customer_identifier: user.phone,
@@ -212,9 +226,15 @@
         const code = document.getElementById('email-code').value;
 
         try {
-          button.disabled = true;
-          btnText.style.display = 'none';
-          spinner.style.display = 'inline-block';
+          if(btnText) {
+            btnText.style.display = 'none';
+          }
+          if(spinner) {
+            spinner.style.display = 'inline-block';
+          }
+          if(button) {
+            button.disabled = true;
+          }
 
           const otpReference = sessionStorage.getItem('reset_reference');
           await apiRequest(`/projects/${CONFIG.projectId}/auth/email/verify`, "PUT", {
@@ -222,7 +242,11 @@
             otp_reference: otpReference,
             email: user.email
           });
-          document.getElementById('email-alert').style.display = 'none';
+
+          const emailAlert = document.getElementById('email-alert');
+          if(emailAlert) {
+            emailAlert.style.display = 'none';
+          }
           alert("Email verified successfully!");
         } catch (error) {
           alert(error?.message || "Invalid verification code. Please try again.");
@@ -239,9 +263,18 @@
         const spinner = button.querySelector('.spinner');
         const code = document.getElementById('phone-code').value;
 
-        button.disabled = true;
+        if(btnText) {
           btnText.style.display = 'none';
+        }
+
+        if(spinner) {
           spinner.style.display = 'inline-block';
+        }
+
+        if(button) {
+        button.disabled = true;
+        }
+
 
         try {
 

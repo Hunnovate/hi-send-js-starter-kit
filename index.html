@@ -87,9 +87,17 @@
     const btnText = button.querySelector('.btn-text');
     const spinner = button.querySelector('.spinner');
   
-    btnText.style.display = 'none';
-    spinner.style.display = 'inline-block';
-    button.disabled = true;
+    if(btnText) {
+      btnText.style.display = 'none';
+    }
+
+    if(spinner) {
+      spinner.style.display = 'inline-block';
+    }
+   
+    if(button) {
+      button.disabled = true;
+    }
   
     try {
       await apiRequest(`/projects/${CONFIG.projectId}/tables/contact_messages/records`, "POST", {
@@ -105,9 +113,17 @@
       alert(error?.message || "Failed to send message. Please try again.");
     } finally {
       // Restore button
-      btnText.style.display = 'inline';
-      spinner.style.display = 'none';
-      button.disabled = false;
+      if(btnText) {
+        btnText.style.display = 'inline';
+      }
+
+      if(spinner) {
+        spinner.style.display = 'none';
+      }
+
+      if(button) {
+        button.disabled = false;
+      }
     }
   };
   

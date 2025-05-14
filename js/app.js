@@ -7,7 +7,7 @@ const getAuthUser = async () => {
                 resolve(response.data);
             }).catch(() => {
                 localStorage.removeItem('token')
-               location.href = "/login.html"
+               location.href = "login.html"
            })
 
         }
@@ -20,7 +20,7 @@ const getAuthUser = async () => {
 const logout = async () => {
     await apiRequest(`/projects/${CONFIG.projectId}/auth/logout`, "POST");
     localStorage.removeItem("token");
-    window.location.href = "/login.html";
+    window.location.href = "login.html";
   };
 
 const confirmLogout = () => {

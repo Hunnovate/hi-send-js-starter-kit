@@ -21,16 +21,16 @@
           </div>
             
             <nav class="sidebar-menu">
-              <a href="/dashboard.html" style="display: flex; align-items: center; gap: 12px;">
+              <a href="dashboard.html" style="display: flex; align-items: center; gap: 12px;">
                 <i class="fa-solid fa-house-user"></i>
                 <span>Dashboard</span>
               </a>
-              <a href="/profile.html" style="display: flex; align-items: center; gap: 12px;">
+              <a href="profile.html" style="display: flex; align-items: center; gap: 12px;">
                 <i class="fa-solid fa-user"></i>
                 <span>Profile</span>
               </a>
   
-              <a href="/contact.html" style="display: flex; align-items: center; gap: 12px;">
+              <a href="contact.html" style="display: flex; align-items: center; gap: 12px;">
                 <i class="fa-solid fa-comment"></i>
                 <span>Contact Us</span>
               </a>
@@ -43,7 +43,7 @@
                 </a>
             </nav>
         </div>
-        <a href="/index.html" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: white;">
+        <a href="index.html" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: white;">
           <i class="fa-solid fa-house"></i>
           <span href="index.html">Home</span>
         </a>
@@ -60,7 +60,7 @@
         <div class="popover-wrapper">
             <i id="user-icon" class="fa-solid fa-circle-user icon-btn" style="color: black;"></i>
             <div id="popover" class="popover">
-                <button style="margin-bottom: 8px;"><a href="/profile.html"
+                <button style="margin-bottom: 8px;"><a href="profile.html"
                                                        style="color: black; text-decoration: none;">Profile</a></button>
                 <button onclick="confirmLogout()" style="color: black;">Logout</button>
             </div>
@@ -69,7 +69,7 @@
 </header>
 <main class="main-content">
     <div class="container" style="max-width: none;">
-        <p><a href="/dashboard.html">Back to Dashboard</a></p>
+        <p><a href="dashboard.html">Back to Dashboard</a></p>
         <div id="edit-profile" style=" display: flex;  align-items: center; justify-content: space-between; gap: 30px;">
             <div style=" background: #f4f4f4; padding: 12px; margin: 10px 0; border-radius: 4px;  min-height: 350px; width: 100%;">
                 <h2>Edit Profile</h2>
@@ -130,7 +130,7 @@
         }
         catch (error) {
             console.log(error);
-            window.location.href = "/login.html";
+            window.location.href = "login.html";
         }
     });
 
@@ -153,7 +153,7 @@
         try {
             const res = await apiRequest(`/projects/${CONFIG.projectId}/auth/user`, "PUT", data, true);
             alert(res.message || "Profile updated");
-            window.location.href = "/dashboard.html";
+            window.location.href = "dashboard.html";
         }
         catch (error) {
             alert(error.message || "Profile update failed");
@@ -187,7 +187,7 @@
             document.getElementById("old_password").value = '';
             document.getElementById("new_password").value = '';
             document.getElementById("new_password_confirmation").value = '';
-            window.location.href = "/dashboard.html";
+            window.location.href = "dashboard.html";
         }
         catch (error) {
             alert(error.message || "Password change failed");
